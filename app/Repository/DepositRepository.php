@@ -25,15 +25,4 @@ class DepositRepository
             'transfer_id' => $deposit->transferId,
         ]);
     }
-
-    public static function update(int $id, array $params): bool
-    {
-        return Deposit::where('id', $id)
-            ->update($params);
-    }
-
-    public static function destroy(int $id): bool
-    {
-        return Deposit::destroy($id);
-    }
 }

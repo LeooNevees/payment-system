@@ -27,15 +27,4 @@ class TransactionRepository
             'value' => $transaction->value,
         ]);
     }
-
-    public static function update(int $id, array $params): bool
-    {
-        return Transaction::where('id', $id)
-            ->update($params);
-    }
-
-    public static function destroy(int $id): bool
-    {
-        return Transaction::destroy($id);
-    }
 }

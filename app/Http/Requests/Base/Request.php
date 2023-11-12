@@ -32,6 +32,16 @@ abstract class Request extends FormRequest implements BaseRequestInterface
                         'At least one field must be entered'
                     );
                 }
+
+                $fields = array_keys($this->rules());
+                foreach ($this->all() as $key => $value) {
+                    if (!in_array($key, $fields)) {
+                        $validator->errors()->add(
+                            'fields',
+                            "Field {$key} is not expected"
+                        );
+                    }
+                }
             }
         ];
     }

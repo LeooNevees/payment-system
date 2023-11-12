@@ -25,10 +25,13 @@ class TransferRepository
         ]);
     }
 
-    public static function update(int $id, array $params): bool
+    public static function update(int $id, TransferDTO $transfer): bool
     {
         return Transfer::where('id', $id)
-            ->update($params);
+            ->update([
+                'status' => $transfer->status,
+                'description' => $transfer->description,
+            ]);
     }
 
     public static function destroy(int $id): bool

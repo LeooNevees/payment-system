@@ -15,7 +15,7 @@ class UserTypeDTO extends DTO
     public static function paramsToDto(array $params): self
     {
         return new self(
-            description: isset($params['description']) ? mb_strtoupper(trim($params['description'])) : null,
+            description: isset($params['description']) ? mb_strtoupper(trim($params['description'])) : '',
             status: isset($params['status']) ? mb_strtoupper(trim($params['status'])) : '',
         );    
     }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transfers', function (Blueprint $table) {
             $table->id();
             $table->enum('status', ['P', 'S', 'C']);
+            $table->string('description', 255)->nullable();
             $table->timestamps();
         });
     }

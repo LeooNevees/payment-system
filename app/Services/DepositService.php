@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\DTO\DepositDTO;
+use App\DTO\NotificationDTO;
 use App\DTO\TransactionDTO;
 use App\DTO\TransferDTO;
+use App\Jobs\DepositJob;
+use App\Jobs\NotificationJob;
 use App\Models\BankAccount;
 use App\Models\Transaction;
 use App\Models\Transfer;
@@ -44,7 +47,11 @@ class DepositService
 
         $bankAccount = (new BankAccountService)->getBankAccountById($deposit->bankAccountId)[0];
 
-        $this->makeDeposit($bankAccount, $deposit);
+        $createdTransfer = TransferRepository::create(TransferDTO::paramsToDto([
+            'status' => Transfer::PENDING_STATUS,
+        ]));
+
+        DepositJob::dispatch($bankAccount, $deposit, $createdTransfer);
 
         return [
             'error' => false,
@@ -52,33 +59,43 @@ class DepositService
         ];
     }
 
-    private function makeDeposit(BankAccount $bankAccount, DepositDTO $deposit): void
+    public function makeDeposit(BankAccount $bankAccount, DepositDTO $deposit, Transfer $createdTransfer): void
     {
-        DB::transaction(function () use ($bankAccount, $deposit) {
-            $createdTransfer = TransferRepository::create(TransferDTO::paramsToDto([
-                'status' => Transfer::SUCCESS_STATUS,
+        try {
+            DB::transaction(function () use ($bankAccount, $deposit, $createdTransfer) {
+                DepositRepository::create(DepositDTO::paramsToDto([
+                    'automated_teller_machine_id' => $deposit->automatedTellerMachineId,
+                    'transfer_id' => $createdTransfer->id,
+                ]));
+
+                TransactionRepository::create(TransactionDTO::paramsToDto([
+                    'bank_account_id' => $deposit->bankAccountId,
+                    'transfer_id' => $createdTransfer->id,
+                    'type' => Transaction::DEBIT_TYPE,
+                    'value' => $deposit->value,
+                ]));
+
+                (new TransferService)->updateAccountCurrentValue($bankAccount, $deposit->value, Transaction::DEBIT_TYPE);
+
+                $authorizedService = (new ExternalAuthorizationService())->authorize();
+                if ($authorizedService === false) {
+                    throw new Exception("Transfer Service not authorized", 400);
+                }
+
+                TransferRepository::update($createdTransfer->id, TransferDTO::paramsToDto([
+                    'status' => Transfer::SUCCESS_STATUS,
+                    'description' => 'FINISHED',
+                ]));
+            });
+
+            NotificationJob::dispatch(NotificationDTO::paramsToDto([
+                'message' => "Deposit of {$deposit->value} made successfully",
             ]));
-
-            DepositRepository::create(DepositDTO::paramsToDto([
-                'automated_teller_machine_id' => $deposit->automatedTellerMachineId,
-                'transfer_id' => $createdTransfer->id,
+        } catch (\Throwable $th) {
+            TransferRepository::update($createdTransfer->id, TransferDTO::paramsToDto([
+                'status' => Transfer::CANCELED_STATUS,
+                'description' => $th->getMessage(),
             ]));
-
-            TransactionRepository::create(TransactionDTO::paramsToDto([
-                'bank_account_id' => $deposit->bankAccountId,
-                'transfer_id' => $createdTransfer->id,
-                'type' => Transaction::DEBIT_TYPE,
-                'value' => $deposit->value,
-            ]));
-
-            (new TransferService)->updateAccountCurrentValue($bankAccount, $deposit->value, Transaction::DEBIT_TYPE);
-
-            $authorizedService = (new ExternalAuthorizationService())->authorize();
-            if (!$authorizedService) {
-                throw new Exception("Transfer Service not authorized", 400);
-            }
-        });
-
-        // DISPACHAR O SMS PRA FILA 
+        }
     }
 }

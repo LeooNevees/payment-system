@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\DTO\DepositDTO;
 use App\Http\Controllers\Base\Controller;
 use App\Http\Requests\DepositRequest;
+use App\Jobs\DepositJob;
+use App\Jobs\ProcessPodcast;
 use App\Services\DepositService;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -12,6 +12,7 @@ class TransferDTO extends DTO
         public int $payeeAccountId,
         public float $value,
         public string $status,
+        public string $description,
     ) {
     }
 
@@ -21,7 +22,8 @@ class TransferDTO extends DTO
             payerAccountId: $params['payer_account_id'] ?? 0,
             payeeAccountId: $params['payee_account_id'] ?? 0,
             value: $params['value'] ?? 0,
-            status: isset($params['status']) ? mb_strtoupper($params['status']) : Transfer::SUCCESS_STATUS,
+            status: isset($params['status']) ? mb_strtoupper($params['status']) : Transfer::PENDING_STATUS,
+            description: isset($params['description']) ? mb_strtoupper($params['description']) : '',
         );    
     }
 }
