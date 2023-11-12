@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\DepositController;
+use App\Http\Controllers\TransferController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserTypeController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,4 +44,16 @@ Route::group(['prefix' => 'bank-account'], function () {
     Route::post('', [BankAccountController::class, 'store']);
     Route::patch('{id}', [BankAccountController::class, 'update']);
     Route::delete('{id}', [BankAccountController::class, 'destroy']);
+});
+
+Route::group(['prefix' => 'transfer'], function () {
+    Route::get('', [TransferController::class, 'index']);
+    Route::get('{id}', [TransferController::class, 'show']);
+    Route::post('', [TransferController::class, 'store']);
+});
+
+Route::group(['prefix' => 'deposit'], function () {
+    Route::get('', [DepositController::class, 'index']);
+    Route::get('{id}', [DepositController::class, 'show']);
+    Route::post('', [DepositController::class, 'store']);
 });

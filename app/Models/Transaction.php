@@ -13,6 +13,8 @@ class Transaction extends Model
     const DEBIT_TYPE = 'D';
 
     protected $fillable = [
+        'bank_account_id',
+        'transfer_id',
         'type',
         'value',
     ];

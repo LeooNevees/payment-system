@@ -2,18 +2,19 @@
 
 namespace Database\Seeders;
 
+use App\DTO\BankAccountDTO;
 use App\DTO\TransactionDTO;
 use App\DTO\TransferDTO;
 use App\Models\Transaction;
 use App\Repository\BankAccountRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\TransferRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\TransferService;
 use Illuminate\Database\Seeder;
 
 class TransferSeeder extends Seeder
 {
-    const TRANSFER_VALUE = 1000;
+    const TRANSFER_VALUE = 500;
 
     /**
      * Run the database seeds.
@@ -27,23 +28,10 @@ class TransferSeeder extends Seeder
         if (count(TransferRepository::findAll()->toArray()) > 1) {
             return;
         }
-        
-        $transfer = TransferRepository::create(TransferDTO::paramsToDto([
-            'status' => 'S'
-        ]));
 
-
-        TransactionRepository::create(TransactionDTO::paramsToDto([
-            'bank_account_id' => $person['id'],
-            'transfer_id' => $transfer['id'],
-            'type' => Transaction::CREDIT_TYPE,
-            'value' => self::TRANSFER_VALUE,
-        ]));
-
-        TransactionRepository::create(TransactionDTO::paramsToDto([
-            'bank_account_id' => $shopkeeper['id'],
-            'transfer_id' => $transfer['id'],
-            'type' => Transaction::DEBIT_TYPE,
+        (new TransferService)->store(TransferDTO::paramsToDto([
+            'payer_account_id' => $person['id'],
+            'payee_account_id' => $shopkeeper['id'],
             'value' => self::TRANSFER_VALUE,
         ]));
     }

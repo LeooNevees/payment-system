@@ -1,11 +1,13 @@
 FROM php:8.1-fpm
 
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    zip \
-    unzip \
-    && docker-php-ext-configure zip \
-    && docker-php-ext-install \ 
+RUN apt-get update \
+    && apt-get install -y \
+        libzip-dev \
+        zip \
+        librabbitmq-dev \
+        amqp-tools \
+    && docker-php-ext-configure zip
+RUN docker-php-ext-install \ 
         zip \
         pdo \
         pdo_mysql

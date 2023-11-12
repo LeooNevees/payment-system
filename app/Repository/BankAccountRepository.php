@@ -26,11 +26,19 @@ class BankAccountRepository
         ]);
     }
 
-    public static function update(int $id, BankAccountDTO $bankAccount): bool
+    public static function updateStatus(int $id, BankAccountDTO $bankAccount): bool
     {
         return BankAccount::where('id', $id)
             ->update([
                 'status' => $bankAccount->status,
+            ]);
+    }
+
+    public static function updateCurrentValue(int $id, BankAccountDTO $bankAccount): bool
+    {
+        return BankAccount::where('id', $id)
+            ->update([
+                'current_value' => $bankAccount->currentValue,
             ]);
     }
 

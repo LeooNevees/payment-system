@@ -10,8 +10,8 @@ class Deposit extends Model
     use HasFactory;
 
     protected $fillable = [
-        'bank_account_id',
         'automated_teller_machine_id',
-        'transaction_id',
+        'bank_account_id',
+        'transfer_id',
     ];
 }

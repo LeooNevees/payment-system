@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\DTO\TransferDTO;
 use App\DTO\UserDTO;
+use App\Models\BankAccount;
+use App\Models\User;
 use App\Models\UserType;
 use App\Repository\AgencyRepository;
+use App\Repository\AutomatedTellerMachineRepository;
 use App\Repository\BankAccountRepository;
 use App\Repository\TransactionRepository;
 use App\Repository\UserRepository;
@@ -124,7 +128,7 @@ class ValidateService
             return false;
         }
 
-        return true;    
+        return true;
     }
 
     public static function bankAccountAlreadyHasTransactionRegistered(int $bankAccount): bool
@@ -135,5 +139,42 @@ class ValidateService
         }
 
         return true;
+    }
+
+    public static function automatedTellerMachineAlreadyRegistered(int $id): bool
+    {
+        $automatedTellerMachine = AutomatedTellerMachineRepository::findBy([['id', $id]]);
+        if (!count($automatedTellerMachine)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function bankAccountHasFunds(BankAccount $payerAccount, TransferDTO $transfer): bool
+    {
+        if ($payerAccount->current_value < $transfer->value) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function payerAndPayeeAreEqual(BankAccount $payerAccount, BankAccount $payeeAccount): bool
+    {
+        if ($payerAccount->id == $payeeAccount->id) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function userIsShopkeeper(User $user): bool
+    {
+        if ($user->user_type === UserType::SHOPKEEPER) {
+            return true;
+        }
+
+        return false;
     }
 }

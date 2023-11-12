@@ -22,6 +22,8 @@ services:
       - ./:/var/www/html
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
       - ./storage/logs:/var/www/logs
+    depends_on:
+      - mysql
 
   nginx:
     image: nginx:alpine

@@ -59,7 +59,7 @@ class BankAccountService
         $mergedBankAccount = array_merge($oldBankAccount->toArray(), $newBankAccount);
         $newBankAccount = BankAccountDTO::paramsToDto($mergedBankAccount);
 
-        if (BankAccountRepository::update($id, $newBankAccount) === false) {
+        if (BankAccountRepository::updateStatus($id, $newBankAccount) === false) {
             throw new Exception("Error updating Bank Account. Please try again later", 500);
         };
 
@@ -89,15 +89,11 @@ class BankAccountService
         ];
     }
 
-    private function getBankAccountById(int $id): Collection
+    public function getBankAccountById(int $id): Collection
     {
         $bankAccount = BankAccountRepository::findBy([['id', $id]]);
-        if ($bankAccount === false) {
-            throw new Exception("Error when searching Bank Account. Please try again later", 500);
-        }
-
         if (!count($bankAccount)) {
-            throw new Exception("Bank Account not found", 404);
+            throw new Exception("Bank Account with ID {$id} not found", 404);
         }
 
         return $bankAccount;

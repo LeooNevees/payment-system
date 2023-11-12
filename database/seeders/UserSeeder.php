@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\DTO\UserDTO;
 use App\Repository\UserRepository;
 use App\Repository\UserTypeRepository;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder

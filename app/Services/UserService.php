@@ -103,7 +103,7 @@ class UserService
         ];
     }
 
-    private function getUserById(int $id): Collection
+    public function getUserById(int $id): Collection
     {
         $user = UserRepository::findBy([['id', $id]]);
         if ($user === false) {

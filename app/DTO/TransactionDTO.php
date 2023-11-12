@@ -21,6 +21,6 @@ class TransactionDTO extends DTO
             transferId: $params['transfer_id'] ?? 0,
             type: isset($params['type']) ? mb_strtoupper($params['type']) : '',
             value: $params['value'] ?? 0,
-        );    
+        );
     }
 }
