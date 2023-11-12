@@ -30,11 +30,23 @@ class TransferSeeder extends Seeder
             return;
         }
 
-        (new TransferService)->store(TransferDTO::paramsToDto([
-            'payer_account_id' => $person['id'],
-            'payee_account_id' => $shopkeeper['id'],
+        $transfer = TransferRepository::create(TransferDTO::paramsToDto([
+            'status' => 'S'
+        ]));
+
+
+        TransactionRepository::create(TransactionDTO::paramsToDto([
+            'bank_account_id' => $person['id'],
+            'transfer_id' => $transfer['id'],
+            'type' => Transaction::CREDIT_TYPE,
             'value' => self::TRANSFER_VALUE,
-            'status' => Transfer::SUCCESS_STATUS,
+        ]));
+
+        TransactionRepository::create(TransactionDTO::paramsToDto([
+            'bank_account_id' => $shopkeeper['id'],
+            'transfer_id' => $transfer['id'],
+            'type' => Transaction::DEBIT_TYPE,
+            'value' => self::TRANSFER_VALUE,
         ]));
     }
 }

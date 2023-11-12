@@ -36,6 +36,13 @@ class UserSeeder extends Seeder
                 'user_type' => $shopkeeperType['id'],
                 'document' => '47106124000110',
                 'password' => '123456789',
+            ],
+            [
+                'name' => 'Test 3',
+                'email' => 'test3@email.com',
+                'user_type' => $shopkeeperType['id'],
+                'document' => '47106124000111',
+                'password' => '123456789',
             ]
         ];
 
