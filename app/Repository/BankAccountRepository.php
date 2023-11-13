@@ -71,7 +71,7 @@ class BankAccountRepository
                                 XA.user_id = XB.id
                             WHERE 
                                 X.transfer_id = A.transfer_id
-                            AND X.`type` = 'D')
+                            AND X.`type` = 'C')
                         )
                     ELSE 
                         concat('Transferred to ', 
