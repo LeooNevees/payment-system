@@ -55,6 +55,24 @@ class BankAccountRepository
                 CASE
                     WHEN D.id 
                         THEN 'Deposit'
+                    WHEN A.`type` = 'D'
+                        THEN concat('Transferred from ', 
+                            (SELECT 
+                                XB.name
+                            FROM 
+                                transactions X
+                            INNER JOIN	
+                                bank_accounts XA
+                            ON
+                                X.bank_account_id = XA.id
+                            INNER JOIN
+                                users XB
+                            ON
+                                XA.user_id = XB.id
+                            WHERE 
+                                X.transfer_id = A.transfer_id
+                            AND X.`type` = 'D')
+                        )
                     ELSE 
                         concat('Transferred to ', 
                             (SELECT 

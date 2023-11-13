@@ -14,5 +14,7 @@ sleep 10
 php artisan migrate
 php artisan db:seed
 
+nohup php artisan queue:work --queue=transfer,deposit,notification,deadLetter &
+
 php-fpm --nodaemonize
 
