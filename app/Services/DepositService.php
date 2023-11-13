@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 
 class DepositService
 {
+    const DEPOSIT_ATTEMPTS = 2;
+    
     public function index(): array
     {
         $users = DepositRepository::findAll();
@@ -90,7 +92,7 @@ class DepositService
                     'status' => Transfer::SUCCESS_STATUS,
                     'description' => 'FINISHED',
                 ]));
-            });
+            }, self::DEPOSIT_ATTEMPTS);
 
             NotificationJob::dispatch(NotificationDTO::paramsToDto([
                 'message' => "Deposit of {$deposit->value} made successfully",
