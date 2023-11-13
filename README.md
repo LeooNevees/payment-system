@@ -1,4 +1,4 @@
-# Payment-system
+# Payment System
  System for deposits and money transfers
 
 ## Getting Started
