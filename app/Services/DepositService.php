@@ -31,6 +31,10 @@ class DepositService
 
     public function show(int $depositId): array
     {
+        if (!ValidateService::depositAlreadyRegistered($depositId)) {
+            throw new Exception("Deposit not found", 404);
+        }
+        
         $user = DepositRepository::findBy([['id', $depositId]]);
 
         return [

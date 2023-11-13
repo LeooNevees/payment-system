@@ -16,5 +16,6 @@ class Transfer extends Model
     protected $fillable = [
         'bank_account_id',
         'transaction_id',
+        'status',
     ];
 }

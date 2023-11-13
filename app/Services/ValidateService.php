@@ -10,7 +10,9 @@ use App\Models\UserType;
 use App\Repository\AgencyRepository;
 use App\Repository\AutomatedTellerMachineRepository;
 use App\Repository\BankAccountRepository;
+use App\Repository\DepositRepository;
 use App\Repository\TransactionRepository;
+use App\Repository\TransferRepository;
 use App\Repository\UserRepository;
 use App\Repository\UserTypeRepository;
 use Exception;
@@ -115,6 +117,26 @@ class ValidateService
     {
         $accountRegistered = BankAccountRepository::findBy([['user_id', $userId], ['agency_id', $agencyId]]);
         if (!count($accountRegistered)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function transferAlreadyRegistered(int $transferId): bool
+    {
+        $transferRegistered = TransferRepository::findBy([['id', $transferId]]);
+        if (!count($transferRegistered)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function depositAlreadyRegistered(int $depositId): bool
+    {
+        $depositRegistered = DepositRepository::findBy([['id', $depositId]]);
+        if (!count($depositRegistered)) {
             return false;
         }
 

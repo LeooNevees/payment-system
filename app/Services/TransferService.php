@@ -33,6 +33,10 @@ class TransferService
 
     public function show(int $transferId): array
     {
+        if (!ValidateService::transferAlreadyRegistered($transferId)) {
+            throw new Exception("Transfer not found", 404);
+        }
+
         $user = TransferRepository::findBy([['id', $transferId]]);
 
         return [
