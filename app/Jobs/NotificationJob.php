@@ -3,10 +3,9 @@
 namespace App\Jobs;
 
 use App\DTO\NotificationDTO;
-use App\Services\DispatchJobService;
 use App\Services\NotificationService;
+use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -24,8 +23,13 @@ class NotificationJob implements ShouldQueue
 
     public function handle(): void
     {
-        if (NotificationService::send() === false) {
+        try {
+            if (NotificationService::send() === false) {
+                throw new Exception("Notification failed");
+            }
+        } catch (\Throwable $th) {
             DeadLetterJob::dispatch($this->notification);
         }
+        
     }
 }
