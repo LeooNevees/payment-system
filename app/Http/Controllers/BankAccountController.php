@@ -17,7 +17,7 @@ class BankAccountController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(): Response
     {
         try {
             $users = $this->service->index();
@@ -34,7 +34,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function show(int $accountId)
+    public function show(int $accountId): Response
     {
         try {
             $user = $this->service->show($accountId);
@@ -51,7 +51,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function showTransfers(int $accountId)
+    public function showTransfers(int $accountId): Response
     {
         try {
             if (!ValidateService::bankAccountAlreadyRegistered($accountId)) {
@@ -89,7 +89,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function update(BankAccountRequest $request, string $accountId)
+    public function update(BankAccountRequest $request, string $accountId): Response
     {
         try {
             $updatedBankAccount = $this->service->update($request->all(), $accountId);
@@ -106,7 +106,7 @@ class BankAccountController extends Controller
         }
     }
 
-    public function destroy(string $accountId)
+    public function destroy(string $accountId): Response
     {
         try {
             $deletedBankAccount = $this->service->destroy($accountId);

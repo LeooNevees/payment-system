@@ -17,7 +17,7 @@ class DepositController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(): Response
     {
         try {
             $users = $this->service->index();
@@ -34,7 +34,7 @@ class DepositController extends Controller
         }
     }
 
-    public function show(int $depositId)
+    public function show(int $depositId): Response
     {
         try {
             $user = $this->service->show($depositId);

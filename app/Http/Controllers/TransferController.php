@@ -15,7 +15,7 @@ class TransferController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(): Response
     {
         try {
             $users = $this->service->index();
@@ -32,7 +32,7 @@ class TransferController extends Controller
         }
     }
 
-    public function show(int $transferId)
+    public function show(int $transferId): Response
     {
         try {
             $user = $this->service->show($transferId);

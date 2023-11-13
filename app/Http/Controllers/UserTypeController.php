@@ -15,7 +15,7 @@ class UserTypeController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(): Response
     {
         try {
             $userTypes = $this->service->index();
@@ -32,7 +32,7 @@ class UserTypeController extends Controller
         }
     }
 
-    public function show(int $userTypeId)
+    public function show(int $userTypeId): Response
     {
         try {
             $userType = $this->service->show($userTypeId);
@@ -66,7 +66,7 @@ class UserTypeController extends Controller
         }
     }
 
-    public function update(UserTypeRequest $request, string $userTypeId)
+    public function update(UserTypeRequest $request, string $userTypeId): Response
     {
         try {
             $updatedUserType = $this->service->update($request->all(), $userTypeId);
@@ -83,7 +83,7 @@ class UserTypeController extends Controller
         }
     }
 
-    public function destroy(string $userTypeId)
+    public function destroy(string $userTypeId): Response
     {
         try {
             $deletedUser = $this->service->destroy($userTypeId);

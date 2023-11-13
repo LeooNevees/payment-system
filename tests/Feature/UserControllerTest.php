@@ -1,7 +1,7 @@
 <?php
 
 it('User Api Index Success', function () {
-    $response = $this->get('api/user');
+    $response = $this->get('api/user', $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -16,7 +16,7 @@ it('User Api Index Success', function () {
 });
 
 it('User Api Show Success', function () {
-    $response = $this->get('api/user/1');
+    $response = $this->get('api/user/1', $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -30,8 +30,8 @@ it('User Api Show Success', function () {
     expect($data['status'])->toEqual('A');
 });
 
-it(' Not Found Error', function () {
-    $response = $this->get('api/user/999');
+it('User Api Show Not Found Error', function () {
+    $response = $this->get('api/user/999', $this->getHeader());
     $response->assertStatus(404);
 
 
@@ -49,7 +49,7 @@ it('User Api Store Success', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(201);
 
     $response = $response->json();
@@ -70,7 +70,7 @@ it('User Api Store With User Already Registered Error', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -86,10 +86,7 @@ it('User Api Store Without Name Error', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request, [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -104,10 +101,7 @@ it('User Api Store Without Email Error', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request, [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -122,10 +116,7 @@ it('User Api Store Without User Type Error', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request, [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -140,10 +131,7 @@ it('User Api Store Without Document Error', function () {
         'password' => 'Test@123'
     ];
 
-    $response = $this->post('api/user', $request, [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -158,10 +146,7 @@ it('User Api Store Without Password Error', function () {
         'document' => '37645812044',
     ];
 
-    $response = $this->post('api/user', $request, [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', $request, $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -169,10 +154,7 @@ it('User Api Store Without Password Error', function () {
 });
 
 it('User Api Store Without Data Error', function () {
-    $response = $this->post('api/user', [], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->post('api/user', [], $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -182,10 +164,7 @@ it('User Api Store Without Data Error', function () {
 it('User Api Update Name Success', function () {
     $response = $this->patch('api/user/1', [
         'name' => 'TEST',
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -196,10 +175,7 @@ it('User Api Update Name Success', function () {
 it('User Api Update Email Success', function () {
     $response = $this->patch('api/user/2', [
         'email' => 'newTest2@email.com',
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -210,10 +186,7 @@ it('User Api Update Email Success', function () {
 it('User Api Update Email Already Registered Error', function () {
     $response = $this->patch('api/user/3', [
         'email' => 'test@email.com',
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -225,10 +198,7 @@ it('User Api Update User Type Success', function () {
     $response = $this->patch('api/user/3', [
         'user_type' => '2',
         'document' => '25699377000101'
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -240,10 +210,7 @@ it('User Api Update User Type With Invalid Document Error', function () {
     $response = $this->patch('api/user/3', [
         'user_type' => '1',
         'document' => '25699377000101'
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(422);
 
     $response = $response->json();
@@ -254,10 +221,7 @@ it('User Api Update User Type With Invalid Document Error', function () {
 it('User Api Update Document Success', function () {
     $response = $this->patch('api/user/3', [
         'document' => '25699377000221'
-    ], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    ], $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -266,10 +230,7 @@ it('User Api Update Document Success', function () {
 });
 
 it('User Api Delete Success', function () {
-    $response = $this->delete('api/user/3', [], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->delete('api/user/3', [], $this->getHeader());
     $response->assertStatus(200);
 
     $response = $response->json();
@@ -278,10 +239,7 @@ it('User Api Delete Success', function () {
 });
 
 it('User Api Delete Not Found Error', function () {
-    $response = $this->delete('api/user/999', [], [
-        'Accept' => 'application/json',
-        'X-Requested-With' => 'XMLHttpRequest'
-    ]);
+    $response = $this->delete('api/user/999', [], $this->getHeader());
     $response->assertStatus(404);
 
     $response = $response->json();
