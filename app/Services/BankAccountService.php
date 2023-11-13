@@ -19,13 +19,23 @@ class BankAccountService
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $bankAccountId): array
     {
-        $user = $this->getBankAccountById($id)[0];
+        $user = $this->getBankAccountById($bankAccountId)[0];
 
         return [
             'error' => false,
             'data' => $user->toArray(),
+        ];
+    }
+
+    public function showTransfers(int $bankAccountId): array
+    {
+        $transfers = BankAccountRepository::transferByAccountId($bankAccountId);
+
+        return [
+            'error' => false,
+            'data' => $transfers,
         ];
     }
 
@@ -52,14 +62,14 @@ class BankAccountService
         ];
     }
 
-    public function update(array $newBankAccount, int $id): array
+    public function update(array $newBankAccount, int $bankAccountId): array
     {
-        $oldBankAccount = $this->getBankAccountById($id)[0];
+        $oldBankAccount = $this->getBankAccountById($bankAccountId)[0];
 
         $mergedBankAccount = array_merge($oldBankAccount->toArray(), $newBankAccount);
         $newBankAccount = BankAccountDTO::paramsToDto($mergedBankAccount);
 
-        if (BankAccountRepository::updateStatus($id, $newBankAccount) === false) {
+        if (BankAccountRepository::updateStatus($bankAccountId, $newBankAccount) === false) {
             throw new Exception("Error updating Bank Account. Please try again later", 500);
         };
 
@@ -69,17 +79,17 @@ class BankAccountService
         ];
     }
 
-    public function destroy(int $id): array
+    public function destroy(int $bankAccountId): array
     {
-        if (!ValidateService::bankAccountAlreadyRegistered($id)) {
+        if (!ValidateService::bankAccountAlreadyRegistered($bankAccountId)) {
             throw new Exception("Bank Account not found", 404);
         }
 
-        if (ValidateService::bankAccountAlreadyHasTransactionRegistered($id)) {
+        if (ValidateService::bankAccountAlreadyHasTransactionRegistered($bankAccountId)) {
             throw new Exception("Bank Account already has transaction registered", 422);
         }
 
-        if (BankAccountRepository::destroy($id) === false) {
+        if (BankAccountRepository::destroy($bankAccountId) === false) {
             throw new Exception("Error deleting Bank Account. Please try again later", 500);
         }
 
@@ -89,11 +99,11 @@ class BankAccountService
         ];
     }
 
-    public function getBankAccountById(int $id): Collection
+    public function getBankAccountById(int $bankAccountId): Collection
     {
-        $bankAccount = BankAccountRepository::findBy([['id', $id]]);
+        $bankAccount = BankAccountRepository::findBy([['id', $bankAccountId]]);
         if (!count($bankAccount)) {
-            throw new Exception("Bank Account with ID {$id} not found", 404);
+            throw new Exception("Bank Account with ID {$bankAccountId} not found", 404);
         }
 
         return $bankAccount;

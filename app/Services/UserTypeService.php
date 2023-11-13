@@ -19,9 +19,9 @@ class UserTypeService
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $userTypeId): array
     {
-        $userType = $this->getUserTypeById($id)[0];
+        $userType = $this->getUserTypeById($userTypeId)[0];
 
         return [
             'error' => false,
@@ -44,9 +44,9 @@ class UserTypeService
         ];
     }
 
-    public function update(array $newUserType, int $id): array
+    public function update(array $newUserType, int $userTypeId): array
     {
-        $oldUserType = $this->getUserTypeById($id)[0];
+        $oldUserType = $this->getUserTypeById($userTypeId)[0];
 
         $mergedUserType = array_merge($oldUserType->toArray(), $newUserType);
         $newUserType = UserTypeDTO::paramsToDto($mergedUserType);
@@ -57,7 +57,7 @@ class UserTypeService
             }
         }
 
-        if (UserTypeRepository::update($newUserType, $id) === false) {
+        if (UserTypeRepository::update($newUserType, $userTypeId) === false) {
             throw new Exception("Error updating User Type. Please try again later", 500);
         };
 
@@ -67,11 +67,11 @@ class UserTypeService
         ];
     }
 
-    public function destroy(int $id): array
+    public function destroy(int $userTypeId): array
     {
-        $this->getUserTypeById($id);
+        $this->getUserTypeById($userTypeId);
 
-        if (UserTypeRepository::destroy($id) === false) {
+        if (UserTypeRepository::destroy($userTypeId) === false) {
             throw new Exception("Error deleting User Type. Please try again later", 500);
         }
 
@@ -81,9 +81,9 @@ class UserTypeService
         ];
     }
 
-    private function getUserTypeById(int $id): Collection
+    private function getUserTypeById(int $userTypeId): Collection
     {
-        $userType = UserTypeRepository::findBy([['id', $id]]);
+        $userType = UserTypeRepository::findBy([['id', $userTypeId]]);
         if ($userType === false) {
             throw new Exception("Error when searching User Type. Please try again later", 500);
         }

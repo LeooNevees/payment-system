@@ -32,10 +32,10 @@ class TransferController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(int $transferId)
     {
         try {
-            $user = $this->service->show($id);
+            $user = $this->service->show($transferId);
 
             return response()->json($user, Response::HTTP_OK);
         } catch (\Throwable $th) {

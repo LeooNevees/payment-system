@@ -41,6 +41,7 @@ Route::group(['prefix' => 'user-type'], function () {
 Route::group(['prefix' => 'bank-account'], function () {
     Route::get('', [BankAccountController::class, 'index']);
     Route::get('{id}', [BankAccountController::class, 'show']);
+    Route::get('transfers/{id}', [BankAccountController::class, 'showTransfers']);
     Route::post('', [BankAccountController::class, 'store']);
     Route::patch('{id}', [BankAccountController::class, 'update']);
     Route::delete('{id}', [BankAccountController::class, 'destroy']);

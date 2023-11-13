@@ -1,6 +1,5 @@
 <?php
 
-use App\DTO\BankAccountDTO;
 use App\DTO\TransferDTO;
 use App\DTO\UserDTO;
 use App\Models\BankAccount;

@@ -91,9 +91,9 @@ class ValidateService
         };
     }
 
-    public static function userAlreadyRegistered(int $id): bool
+    public static function userAlreadyRegistered(int $userId): bool
     {
-        $user = UserRepository::findBy([['id', $id]]);
+        $user = UserRepository::findBy([['id', $userId]]);
         if (!count($user)) {
             return false;
         }
@@ -101,9 +101,9 @@ class ValidateService
         return true;
     }
 
-    public static function agencyAlreadyRegistered(int $id): bool
+    public static function agencyAlreadyRegistered(int $agencyId): bool
     {
-        $agency = AgencyRepository::findBy([['id', $id]]);
+        $agency = AgencyRepository::findBy([['id', $agencyId]]);
         if (!count($agency)) {
             return false;
         }
@@ -121,9 +121,9 @@ class ValidateService
         return true;
     }
 
-    public static function bankAccountAlreadyRegistered(int $id): bool
+    public static function bankAccountAlreadyRegistered(int $bankAccountId): bool
     {
-        $bankAccount = BankAccountRepository::findBy([['id', $id]]);
+        $bankAccount = BankAccountRepository::findBy([['id', $bankAccountId]]);
         if (!count($bankAccount)) {
             return false;
         }
@@ -133,18 +133,18 @@ class ValidateService
 
     public static function bankAccountAlreadyHasTransactionRegistered(int $bankAccount): bool
     {
-        $transactionRegistered = TransactionRepository::findBy([['bank_account_id', $bankAccount]]);
-        if (!count($transactionRegistered)) {
+        $transaction = TransactionRepository::findBy([['bank_account_id', $bankAccount]]);
+        if (!count($transaction)) {
             return false;
         }
 
         return true;
     }
 
-    public static function automatedTellerMachineAlreadyRegistered(int $id): bool
+    public static function automatedTellerMachineAlreadyRegistered(int $tellerMachineId): bool
     {
-        $automatedTellerMachine = AutomatedTellerMachineRepository::findBy([['id', $id]]);
-        if (!count($automatedTellerMachine)) {
+        $tellerMachine = AutomatedTellerMachineRepository::findBy([['id', $tellerMachineId]]);
+        if (!count($tellerMachine)) {
             return false;
         }
 

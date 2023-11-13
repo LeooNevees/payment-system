@@ -29,9 +29,9 @@ class UserRepository
         ]);
     }
 
-    public static function update(int $id, UserDTO $newUser): bool
+    public static function update(int $userId, UserDTO $newUser): bool
     {
-        return User::where('id', $id)
+        return User::where('id', $userId)
             ->update([
                 'name' => $newUser->name,
                 'email' => $newUser->email,
@@ -41,8 +41,8 @@ class UserRepository
             ]);
     }
 
-    public static function destroy(int $id): bool
+    public static function destroy(int $userId): bool
     {
-        return User::destroy($id);
+        return User::destroy($userId);
     }
 }

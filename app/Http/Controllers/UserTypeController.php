@@ -32,10 +32,10 @@ class UserTypeController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(int $userTypeId)
     {
         try {
-            $userType = $this->service->show($id);
+            $userType = $this->service->show($userTypeId);
 
             return response()->json($userType, Response::HTTP_OK);
         } catch (\Throwable $th) {
@@ -66,10 +66,10 @@ class UserTypeController extends Controller
         }
     }
 
-    public function update(UserTypeRequest $request, string $id)
+    public function update(UserTypeRequest $request, string $userTypeId)
     {
         try {
-            $updatedUserType = $this->service->update($request->all(), $id);
+            $updatedUserType = $this->service->update($request->all(), $userTypeId);
 
             return response()->json($updatedUserType, Response::HTTP_OK);
         } catch (\Throwable $th) {
@@ -83,10 +83,10 @@ class UserTypeController extends Controller
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $userTypeId)
     {
         try {
-            $deletedUser = $this->service->destroy($id);
+            $deletedUser = $this->service->destroy($userTypeId);
 
             return response()->json($deletedUser, Response::HTTP_OK);
         } catch (\Throwable $th) {

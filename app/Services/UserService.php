@@ -20,9 +20,9 @@ class UserService
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $userId): array
     {
-        $user = $this->getUserById($id)[0];
+        $user = $this->getUserById($userId)[0];
 
         return [
             'error' => false,
@@ -51,9 +51,9 @@ class UserService
         ];
     }
 
-    public function update(array $newUser, int $id): array
+    public function update(array $newUser, int $userId): array
     {
-        $oldUser = $this->getUserById($id)[0];
+        $oldUser = $this->getUserById($userId)[0];
 
         $mergedUser = array_merge($oldUser->makeVisible('password')->toArray(), $newUser);
         $newUser = UserDTO::paramsToDto($mergedUser);
@@ -79,7 +79,7 @@ class UserService
             $this->validateDocument($newUser);
         }
 
-        if (UserRepository::update($id, $newUser) === false) {
+        if (UserRepository::update($userId, $newUser) === false) {
             throw new Exception("Error updating User. Please try again later", 500);
         };
 
@@ -89,11 +89,11 @@ class UserService
         ];
     }
 
-    public function destroy(int $id): array
+    public function destroy(int $userId): array
     {
-        $this->getUserById($id);
+        $this->getUserById($userId);
 
-        if (UserRepository::destroy($id) === false) {
+        if (UserRepository::destroy($userId) === false) {
             throw new Exception("Error deleting User. Please try again later", 500);
         }
 
@@ -103,9 +103,9 @@ class UserService
         ];
     }
 
-    public function getUserById(int $id): Collection
+    public function getUserById(int $userId): Collection
     {
-        $user = UserRepository::findBy([['id', $id]]);
+        $user = UserRepository::findBy([['id', $userId]]);
         if ($user === false) {
             throw new Exception("Error when searching User. Please try again later", 500);
         }

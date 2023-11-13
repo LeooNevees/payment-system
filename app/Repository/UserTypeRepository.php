@@ -25,17 +25,17 @@ class UserTypeRepository
         ]);
     }
 
-    public static function update(UserTypeDTO $newUserType, int $id): bool
+    public static function update(UserTypeDTO $newUserType, int $userTypeId): bool
     {
-        return UserType::where('id', $id)
+        return UserType::where('id', $userTypeId)
             ->update([
                 'description' => $newUserType->description,
                 'status' => $newUserType->status,
             ]);
     }
 
-    public static function destroy(int $id): bool
+    public static function destroy(int $userTypeId): bool
     {
-        return UserType::destroy($id);
+        return UserType::destroy($userTypeId);
     }
 }

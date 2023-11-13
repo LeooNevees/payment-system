@@ -34,10 +34,10 @@ class DepositController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(int $depositId)
     {
         try {
-            $user = $this->service->show($id);
+            $user = $this->service->show($depositId);
 
             return response()->json($user, Response::HTTP_OK);
         } catch (\Throwable $th) {

@@ -24,7 +24,7 @@ class NotificationJob implements ShouldQueue
 
     public function handle(): void
     {
-        if (NotificationService::send($this->notification) === false) {
+        if (NotificationService::send() === false) {
             DeadLetterJob::dispatch($this->notification);
         }
     }

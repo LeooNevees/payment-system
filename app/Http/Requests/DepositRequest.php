@@ -9,7 +9,7 @@ class DepositRequest extends Request
     public function validatePost(): array
     {
         return [
-            'automated_teller_machine_id' => 'required|integer',
+            'teller_machine_id' => 'required|integer',
             'bank_account_id' => 'required|integer',
             'value' => 'required|numeric',
         ];

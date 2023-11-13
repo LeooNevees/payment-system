@@ -38,7 +38,7 @@ abstract class Request extends FormRequest implements BaseRequestInterface
                     if (!in_array($key, $fields)) {
                         $validator->errors()->add(
                             'fields',
-                            "Field {$key} is not expected"
+                            "Field {$key} with {$value} is not expected"
                         );
                     }
                 }

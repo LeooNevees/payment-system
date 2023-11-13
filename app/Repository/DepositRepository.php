@@ -21,7 +21,7 @@ class DepositRepository
     public static function create(DepositDTO $deposit): Deposit
     {
         return Deposit::create([
-            'automated_teller_machine_id' => $deposit->automatedTellerMachineId,
+            'automated_teller_machine_id' => $deposit->tellerMachineId,
             'transfer_id' => $deposit->transferId,
         ]);
     }

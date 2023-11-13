@@ -31,9 +31,9 @@ class TransferService
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $transferId): array
     {
-        $user = TransferRepository::findBy([['id', $id]]);
+        $user = TransferRepository::findBy([['id', $transferId]]);
 
         return [
             'error' => false,

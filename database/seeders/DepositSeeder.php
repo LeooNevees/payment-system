@@ -36,7 +36,7 @@ class DepositSeeder extends Seeder
         ]));
 
         DepositRepository::create(DepositDTO::paramsToDto([
-            'automated_teller_machine_id' => $automatedTellerMachine['id'],
+            'teller_machine_id' => $automatedTellerMachine['id'],
             'transfer_id' => $transfer->id,
         ]));
 

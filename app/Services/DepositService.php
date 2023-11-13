@@ -29,9 +29,9 @@ class DepositService
         ];
     }
 
-    public function show(int $id): array
+    public function show(int $depositId): array
     {
-        $user = DepositRepository::findBy([['id', $id]]);
+        $user = DepositRepository::findBy([['id', $depositId]]);
 
         return [
             'error' => false,
@@ -41,7 +41,7 @@ class DepositService
 
     public function store(DepositDTO $deposit): array
     {
-        if (!ValidateService::automatedTellerMachineAlreadyRegistered($deposit->automatedTellerMachineId)) {
+        if (!ValidateService::automatedTellerMachineAlreadyRegistered($deposit->tellerMachineId)) {
             throw new Exception("Automated Teller Machine not found", 404);
         }
 
@@ -64,7 +64,7 @@ class DepositService
         try {
             DB::transaction(function () use ($bankAccount, $deposit, $createdTransfer) {
                 DepositRepository::create(DepositDTO::paramsToDto([
-                    'automated_teller_machine_id' => $deposit->automatedTellerMachineId,
+                    'teller_machine_id' => $deposit->tellerMachineId,
                     'transfer_id' => $createdTransfer->id,
                 ]));
 

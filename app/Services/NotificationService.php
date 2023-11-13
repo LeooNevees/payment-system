@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use App\DTO\NotificationDTO;
 use Illuminate\Support\Facades\Http;
 
 class NotificationService
 {
-    public static function send(NotificationDTO $notification): bool
+    public static function send(): bool
     {
         $response = Http::post(env('NOTIFICATION_SERVICE_URL'));
         return false;
