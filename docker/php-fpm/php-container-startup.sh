@@ -11,6 +11,7 @@ chmod 777 -R storage/
 composer install
 
 sleep 10
+php artisan key:generate
 php artisan migrate
 php artisan db:seed
 
