@@ -6,6 +6,7 @@ use App\DTO\TransferDTO;
 use App\Http\Controllers\Base\Controller;
 use App\Http\Requests\TransferRequest;
 use App\Services\TransferService;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransferController extends Controller
@@ -49,10 +50,10 @@ class TransferController extends Controller
         }
     }
 
-    public function store(TransferRequest $request): Response
+    public function store(Request $request): Response
     {
         try {
-            $createdTransfer = $this->service->store(TransferDTO::paramsToDto($request->all()));
+            $createdTransfer = $this->service->store(TransferDTO::paramsToDto([]));
 
             return response()->json($createdTransfer, Response::HTTP_CREATED);
         } catch (\Throwable $th) {

@@ -11,11 +11,12 @@ chmod 777 -R storage/
 composer install
 
 sleep 10
-php artisan key:generate
-php artisan migrate
-php artisan db:seed
+# php artisan key:generate
+# php artisan migrate
+# php artisan db:seed
+php artisan octane:start
 
-nohup php artisan queue:work --queue=transfer,deposit,notification,deadLetter &
+# nohup php artisan queue:work --queue=transfer,deposit,notification,deadLetter &
 
-php-fpm --nodaemonize
+# php-fpm --nodaemonize
 

@@ -47,9 +47,10 @@ class TransferService
 
     public function store(TransferDTO $transfer): array
     {
+        dd('chegou aqui');
         $bankAccountService = new BankAccountService();
-        $payerAccount = $bankAccountService->getBankAccountById($transfer->payerAccountId)[0];
-        $payeeAccount = $bankAccountService->getBankAccountById($transfer->payeeAccountId)[0];
+        $payerAccount = $bankAccountService->getBankAccountById(1)[0];
+        $payeeAccount = $bankAccountService->getBankAccountById(2)[0];
         $payerUser = (new UserService())->getUserById($payerAccount->user_id)[0];
 
         if (ValidateService::userIsShopkeeper($payerUser)) {
@@ -61,8 +62,6 @@ class TransferService
         }
 
         $createdTransfer = TransferRepository::create($transfer);
-
-        TransferJob::dispatch($payerAccount, $payeeAccount, $transfer, $createdTransfer);
 
         return [
             'error' => false,

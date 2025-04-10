@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('', [UserController::class, 'index']);
         Route::get('{id}', [UserController::class, 'show']);
@@ -59,4 +59,4 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('{id}', [DepositController::class, 'show']);
         Route::post('', [DepositController::class, 'store']);
     });
-});
+// });

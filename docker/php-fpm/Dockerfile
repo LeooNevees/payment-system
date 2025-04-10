@@ -7,12 +7,17 @@ RUN apt-get update \
         unzip \
         librabbitmq-dev \
         amqp-tools \
+        procps \
+        libssl-dev \
+        && pecl install swoole \
+        && docker-php-ext-enable swoole \
     && docker-php-ext-configure zip \
     && docker-php-ext-install \
         zip \
         pdo \
         pdo_mysql \
-        sockets
+        sockets \
+    && docker-php-ext-install pcntl
 
 # RabbitMQ
 RUN pecl install amqp \
@@ -23,6 +28,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www/html
 
-EXPOSE 9000
+# EXPOSE 8000
 
-ENTRYPOINT ["bash", "docker/php-fpm/php-container-startup.sh"]
+# ENTRYPOINT ["bash", "docker/php-fpm/php-container-startup.sh"]
